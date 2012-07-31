@@ -7,6 +7,26 @@
     <groupId>clinicalTrials</groupId>
     <artifactId>clinicalTrials</artifactId>
     <version>1.0</version>
-
-    
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.3.1</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>xmltocsv.Main</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <dependencies>
+        <dependency>
+              <groupId>org.scala-tools.testing</groupId>
+              <artifactId>specs</artifactId>
+              <version>1.4.4</version>
+        </dependency>
+    </dependencies>
 </project>

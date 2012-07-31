@@ -1,0 +1,18 @@
+<component name="libraryTable">
+  <library name="Scala">
+    <CLASSES>
+      <root url="jar://C:/Program Files (x86)/scala/lib/jline.jar!/" />
+      <root url="jar://C:/Program Files (x86)/scala/lib/scala-compiler.jar!/" />
+      <root url="jar://C:/Program Files (x86)/scala/lib/scala-dbc.jar!/" />
+      <root url="jar://C:/Program Files (x86)/scala/lib/scala-library.jar!/" />
+      <root url="jar://C:/Program Files (x86)/scala/lib/scala-partest.jar!/" />
+      <root url="jar://C:/Program Files (x86)/scala/lib/scala-swing.jar!/" />
+      <root url="jar://C:/Program Files (x86)/scala/lib/scalacheck.jar!/" />
+      <root url="jar://C:/Program Files (x86)/scala/lib/scalap.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../scala-sources-2.9.2/scala-2.9.2-sources/lib/scala-library-src.jar!/" />
+    </SOURCES>
+  </library>
+</component>
