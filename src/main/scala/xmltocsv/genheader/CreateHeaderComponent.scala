@@ -1,10 +1,10 @@
 package xmltocsv.genheader
 
 import java.io.File
-import xml.{XML, Text, Node, Elem}
-import collection.immutable.TreeMap
-import collection.mutable
-import io.Source
+import scala.xml.{XML, Text, Node, Elem}
+import scala.collection.immutable.TreeMap
+import scala.collection.mutable
+import scala.io.Source
 import xmltocsv.{DslBinder, AlphaNumericComparator}
 
 /**
@@ -25,6 +25,7 @@ trait CreateHeaderComponent {
       import CreateHeader._
       userColumns.columnNames ++ csvHeader(histogram(nodes), headNode).toIndexedSeq.sorted(AlphaNumericComparator)
     }
+    override val customColumns = userColumns.columnNames
   }
 
   class LoadedFromFile(private val file: File) extends CreateHeader {
@@ -37,12 +38,18 @@ trait CreateHeaderComponent {
   class Predefined(predefinedHeader: Seq[String]) extends CreateHeader {
     val header = userColumns.columnNames ++ predefinedHeader
   }
+}
 
-
+trait FilteredHeader extends CreateHeader {
+  def filter: (String) => Boolean
+  abstract override def header = {
+    super.header.filter(filter)
+  }
 }
 
 trait CreateHeader {
   def header: Seq[String]
+  def customColumns: Seq[String] = Nil
 }
 
 private[genheader] object CreateHeader {
@@ -82,7 +89,7 @@ private[genheader] object CreateHeader {
   }
 
   def csvHeader(histogram: Map[String, Int], head: String): List[String] = {
-    val startingMap = histogram + (("|" + head, 1))
+    val startingMap = histogram + (("|"+head) -> 1)
     _csvHeader(startingMap, List(), head, "|" + head).filterNot(_ == head + 1)
   }
 

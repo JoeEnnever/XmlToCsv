@@ -1,12 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>clinicalTrials</groupId>
     <artifactId>clinicalTrials</artifactId>
     <version>1.0</version>
+    <repositories>
+      <repository>
+        <id>scala-tools.org</id>
+        <url>http://scala-tools.org/repo-releases</url>
+
+      </repository>
+    </repositories>
+          <pluginRepositories>
+                <pluginRepository>
+                        <id>scala-tools.org</id>
+                              <name>Scala-tools Maven2 Repository</name>
+                                    <url>http://scala-tools.org/repo-releases</url>
+                                        </pluginRepository>
+                                          </pluginRepositories>
     <build>
         <plugins>
             <plugin>
@@ -19,6 +31,11 @@
                         </manifest>
                     </archive>
                 </configuration>
+            </plugin>
+            <plugin>
+              <groupId>org.scala.tools</groupId>
+              <artifactId>maven-scala-plugin</artifactId>
+
             </plugin>
         </plugins>
     </build>

@@ -1,6 +1,6 @@
 package xmltocsv
 
-import _root_.dsl.Dsl.Columns
+import _root_.dsl.Dsl.OutputConfiguration
 
 /**
  *
@@ -9,5 +9,5 @@ import _root_.dsl.Dsl.Columns
  */
 
 trait DslBinder {
-  val userColumns: Columns
+  val userColumns: OutputConfiguration
 }

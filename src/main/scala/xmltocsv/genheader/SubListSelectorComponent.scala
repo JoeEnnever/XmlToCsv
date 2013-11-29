@@ -7,7 +7,7 @@ trait SubListSelectorComponent {
   }
 
   class SelectAll extends SubListSelector {
-    def selectSubList[T](list: List[T]) = list
+    def selectSubList[T](list: List[T]) = { println("select all"); list }
   }
 
   class SelectRandom(amt: Int) extends SubListSelector {
