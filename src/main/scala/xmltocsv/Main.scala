@@ -71,9 +71,7 @@ object Main {
     run(xmlDir, outFile, Some(config))
   }
 
-  implicit def str2IgnoreCase(str: String) = new StrIgnoreCase(str)
-
-  class StrIgnoreCase(str: String) {
+  implicit class StrIgnoreCase(str: String) {
     def ignoreCase = this
     def unapply(other: String) = {
       if(str.equalsIgnoreCase(other)) Some(other)
@@ -102,7 +100,7 @@ object Main {
       }
     } catch {
       case ioe: IOException => ioe.printStackTrace(); Console.err.println(ioe); sys.exit(1)
-      case t => t.printStackTrace(); sys.exit(1)
+      case t: Throwable => t.printStackTrace(); sys.exit(1)
     }
   }
 

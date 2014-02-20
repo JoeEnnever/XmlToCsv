@@ -3,8 +3,8 @@ package dsl
 import xml.{NodeSeq, Elem}
 import xmltocsv.genheader.CreateHeader
 import annotation.tailrec
-import collection.parallel.mutable
-import collection.mutable.{ArrayBuffer, ListBuffer}
+import collection.mutable.ArrayBuffer
+import scala.language.implicitConversions
 
 //  create column "Num Locations" {
 //    count of("clinical_trial", "location")
@@ -135,7 +135,9 @@ object Dsl {
     private var _name: String = _
     private var _data: ColumnData = _
     def build = Header(cnn(_name), cnn(_data))
-    def column(name: String) = new {
+    def column(name: String) = new Having(name)
+
+    class Having(name: String) {
       def having(data: => ColumnData): Unit = {
         _name = name
         _data = data
@@ -150,11 +152,28 @@ object Dsl {
   }
 
   private[dsl] class CondBuilder(col: ColumnData, baseFields: Seq[String]) {
-    def of(baseFields: String*) = new CondBuilder(col, baseFields){
-      def where(matchFields: String*) = new {
-        def is(matcher: Conditional) = ConditionalColumn(col, baseFields, matchFields, matcher)
-        def is_not(matcher: Conditional) = ConditionalColumn(col, baseFields, matchFields, new Conditional(s => !matcher(s)))
-        def is_not_null = is(new Conditional(s => s != null && s != ""))
+    def of(baseFields: String*) = new FilteredCondBuilder(col, baseFields)
+
+    class FilteredCondBuilder(col: ColumnData, baseFields: Seq[String]) extends CondBuilder(col, baseFields) {
+      def where(matchFields: String*) = new Matcher(matchFields)
+
+      class Matcher(matchFields: Seq[String]) {
+        def is(matcher: Conditional) = build(matcher)
+
+        def is_not(matcher: Conditional) = build(new Conditional(s => !matcher(s)))
+
+        def is_not_null = build(new Conditional(s => s != null && s != ""))
+
+        def contains = contains_any _
+
+        def contains_any(strs: String*) = build(new Conditional(s => strs.exists(_.contains(s))))
+
+        def contains_all(strs: String*) = build(new Conditional(s => strs.forall(_.contains(s))))
+
+        def matches(predicate: String => Boolean) = build(new Conditional(predicate))
+
+        private def build(matcher: Conditional) =
+          ConditionalColumn(col, baseFields, matchFields, matcher)
       }
     }
     def toConditional = ConditionalColumn(col, baseFields, Nil, new Conditional((s)=>true))
@@ -193,7 +212,9 @@ object Dsl {
       }
     }
 
-    def filter = new {
+    def filter = new Columns
+
+    class Columns {
       def columns(builder: => ColumnFilter) = OutputConfiguration.this.includeFilter = Some(builder)
     }
 
